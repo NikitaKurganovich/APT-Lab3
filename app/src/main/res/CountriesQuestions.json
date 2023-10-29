@@ -1,0 +1,76 @@
+{
+  "questions" : [
+    {
+      "question": "Which country this flag is?",
+      "question_type": "with_image",
+      "image": "R.drawable.latvia",
+      "correct_answer": "Latvia",
+      "available_answers": [
+        "Latvia",
+        "Germany",
+        "France",
+        "Nigeria"
+      ]
+    },
+    {
+      "question": "",
+      "question_type": "",
+      "image": null,
+      "correct_answer": "",
+      "available_answers": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "question": "",
+      "question_type": "",
+      "image": null,
+      "correct_answer": "",
+      "available_answers": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "question": "",
+      "question_type": "",
+      "image": null,
+      "correct_answer": "",
+      "available_answers": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+    ,{
+      "question": "",
+      "question_type": "",
+      "image": null,
+      "correct_answer": "",
+      "available_answers": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+    ,{
+      "question": "",
+      "question_type": "",
+      "image": null,
+      "correct_answer": "",
+      "available_answers": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  ]
+}
