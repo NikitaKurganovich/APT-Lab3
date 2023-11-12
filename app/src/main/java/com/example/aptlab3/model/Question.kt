@@ -1,8 +1,14 @@
 package com.example.aptlab3.model
 
-open class Question(
-    val question: String,
-    val rightAnswer: String,
-    val avaibleAnswers: List<String>) {
+import org.json.JSONObject
 
+open class Question(private val jsonObject: JSONObject) {
+    val availableQuestion: List<String>
+        get() {
+            return answers.shuffled()
+        }
+
+    private val answers = List(jsonObject.getJSONArray("available_answers").length()) { i ->
+        jsonObject.getJSONArray("available_answers")[i].toString()
+    }
 }

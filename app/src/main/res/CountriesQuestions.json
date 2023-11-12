@@ -2,8 +2,8 @@
   "questions" : [
     {
       "question": "Which country this flag is?",
-      "question_type": "with_image",
-      "image": "R.drawable.latvia",
+      "question_type": "image",
+      "image": "latvia",
       "correct_answer": "Latvia",
       "available_answers": [
         "Latvia",

@@ -1,7 +1,8 @@
 package com.example.aptlab3.model
 
 import android.media.Image
+import org.json.JSONObject
 
-class ImageQuestion(val image: Image) {
-
+data class ImageQuestion(val jsonObject: JSONObject): Question(jsonObject) {
+    val question = jsonObject.getString("question")
 }
