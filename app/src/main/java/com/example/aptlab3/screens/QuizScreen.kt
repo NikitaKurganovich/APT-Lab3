@@ -13,43 +13,12 @@ import com.example.aptlab3.QuestionElement
 import com.example.aptlab3.ui.theme.APTLab3Theme
 import org.json.JSONObject
 
-class QuizzScreen: Screen {
+data class QuizScreen(val questionJson: JSONObject): Screen {
     @Composable
     override fun Content() {
-        val jsonString =
-            """
-{
-    "questions": [
-        {
-            "question": "Which country this flag is?",
-            "question_type": "with_image",
-            "image": "latvia",
-            "correct_answer": "Latvia",
-            "available_answers": [
-                "Latvia",
-                "Germany",
-                "France",
-                "Nigeria"
-            ]
-        },
-        {
-            "question": "Which country this flag is?",
-            "question_type": "with_image",
-            "image": "egypt",
-            "correct_answer": "Egypt",
-            "available_answers": [
-                "Liechtenstein",
-                "Kosovo",
-                "Egypt",
-                "Greece"
-            ]
-        }
-    ]
-}
-"""
-        val jsonObject = JSONObject(jsonString)
+
         var currentQuestion by remember { mutableStateOf(0) }
-        val questions = jsonObject.getJSONArray("questions")
+        val questions = questionJson.getJSONArray("questions")
         var questionObject by remember { mutableStateOf(questions.getJSONObject(currentQuestion)) }
 
         APTLab3Theme {

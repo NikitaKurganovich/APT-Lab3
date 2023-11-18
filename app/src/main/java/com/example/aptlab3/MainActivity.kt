@@ -2,30 +2,21 @@
 
 package com.example.aptlab3
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.material3.ListItemDefaults.shape
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
@@ -39,7 +30,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Navigator(HomeScreen())
+
+            Navigator(HomeScreen(baseContext))
 
         }
     }
@@ -54,7 +46,7 @@ fun DisplayImage(imageResId: Int) {
 fun QuestionElement(questionObject: JSONObject) {
     val question = ImageQuestion(questionObject)
     val context = LocalContext.current
-    val variantList = question.availableQuestion
+    val variantList = question.answersVariants
     val imageResIdString = questionObject.getString("image")
     val imageResId = context.resources.getIdentifier(imageResIdString, "drawable", context.packageName)
 
@@ -62,7 +54,7 @@ fun QuestionElement(questionObject: JSONObject) {
 
     Column {
         DisplayImage(imageResId)
-        AnswerVariants(variantList)
+        AnswerVariants(question)
     }
 }
 
@@ -122,18 +114,27 @@ fun smsh(){
 }
 
 @Composable
-fun AnswerVariants(list: List<String>) {
+fun AnswerVariants(question: Question) {
+
+
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(2)
     ) {
-        items(list) {
-            Text(
-                it, Modifier.border(
-                    BorderStroke(2.dp, Color.Black), shape = shape
-                ).padding(all = 3.dp), style = TextStyle(
-                    fontSize = 30.sp
+        items(question.answersVariants) {
+            Button(
+                onClick = {
+
+                },
+                Modifier
+                    .padding(all = 3.dp)
+            ){
+                Text(
+                    it, style = TextStyle(
+                        fontSize = 25.sp
+                    )
                 )
-            )
+            }
         }
     }
 }
+

@@ -13,15 +13,15 @@
       ]
     },
     {
-      "question": "",
-      "question_type": "",
-      "image": null,
-      "correct_answer": "",
+      "question": "Which country this flag is?",
+      "question_type": "with_image",
+      "image": "egypt",
+      "correct_answer": "Egypt",
       "available_answers": [
-        "",
-        "",
-        "",
-        ""
+        "Liechtenstein",
+        "Kosovo",
+        "Egypt",
+        "Greece"
       ]
     },
     {

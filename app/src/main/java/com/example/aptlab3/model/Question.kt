@@ -3,7 +3,9 @@ package com.example.aptlab3.model
 import org.json.JSONObject
 
 open class Question(private val jsonObject: JSONObject) {
-    val availableQuestion: List<String>
+
+    val question = jsonObject.getString("question")
+    val answersVariants: List<String>
         get() {
             return answers.shuffled()
         }
