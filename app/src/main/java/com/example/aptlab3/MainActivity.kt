@@ -43,73 +43,15 @@ fun DisplayImage(imageResId: Int) {
 }
 
 @Composable
-fun QuestionElement(questionObject: JSONObject) {
-    val question = ImageQuestion(questionObject)
+fun ImageQuestionElement(questionObject: ImageQuestion) {
     val context = LocalContext.current
-    val variantList = question.answersVariants
-    val imageResIdString = questionObject.getString("image")
-    val imageResId = context.resources.getIdentifier(imageResIdString, "drawable", context.packageName)
+    val imageResId = context.resources.getIdentifier(questionObject.imageResIdString, "drawable", context.packageName)
 
     val shape = RoundedCornerShape(10.dp)
 
     Column {
         DisplayImage(imageResId)
-        AnswerVariants(question)
-    }
-}
-
-@Composable
-fun smsh(){
-    val jsonString =
-        """
-{
-    "questions": [
-        {
-            "question": "Which country this flag is?",
-            "question_type": "with_image",
-            "image": "latvia",
-            "correct_answer": "Latvia",
-            "available_answers": [
-                "Latvia",
-                "Germany",
-                "France",
-                "Nigeria"
-            ]
-        },
-        {
-            "question": "Which country this flag is?",
-            "question_type": "with_image",
-            "image": "egypt",
-            "correct_answer": "Egypt",
-            "available_answers": [
-                "Liechtenstein",
-                "Kosovo",
-                "Egypt",
-                "Greece"
-            ]
-        }
-    ]
-}
-"""
-    val jsonObject = JSONObject(jsonString)
-    var currentQuestion by remember { mutableStateOf(0) }
-    val questions = jsonObject.getJSONArray("questions")
-    var questionObject by remember { mutableStateOf(questions.getJSONObject(currentQuestion)) }
-
-    APTLab3Theme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            Column {
-                QuestionElement(questionObject)
-                Button(
-                    onClick = {
-                        currentQuestion = if (currentQuestion == 0) 1 else 0
-                        questionObject = questions.getJSONObject(currentQuestion)
-                    }
-                ) {
-                    Text("To next")
-                }
-            }
-        }
+        AnswerVariants(questionObject)
     }
 }
 

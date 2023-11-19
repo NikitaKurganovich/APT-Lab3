@@ -1,17 +1,33 @@
 package com.example.aptlab3.repository
 
 import android.content.Context
+import com.example.aptlab3.model.ImageQuestion
+import com.example.aptlab3.model.Question
+import com.example.aptlab3.model.TextQuestion
 
 import org.json.JSONObject
 
 class CountriesQuestionsRepository {
     companion object{
-        fun jsonImport(context: Context): JSONObject {
+        fun dataImport(context: Context): List<Question> {
             val assetManager = context.assets
             val string = assetManager.open("countries_questions.json")
                 .bufferedReader()
                 .use { it.readText() }
-            return JSONObject(string)
+            val jsonList = JSONObject(string).getJSONArray("questions")
+
+            return List(jsonList.length()){
+                fromJson(jsonList[it] as JSONObject)
+            }
+        }
+        private fun fromJson(jsonObject: JSONObject): Question {
+            return if (jsonObject.getString("question_type") == "image") {
+                ImageQuestion(jsonObject)
+            } else {
+                TextQuestion(jsonObject)
+            }
         }
     }
+
+
 }

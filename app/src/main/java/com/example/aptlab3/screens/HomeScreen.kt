@@ -28,7 +28,7 @@ data class HomeScreen(val baseContext: Context) : Screen {
         ) {
             Button(
                 onClick = {
-                    navigator.push(QuizScreen(CountriesQuestionsRepository.jsonImport(baseContext)))
+                    navigator.push(QuizScreen(CountriesQuestionsRepository.dataImport(baseContext)))
                 },
                 Modifier
                     .fillMaxWidth()

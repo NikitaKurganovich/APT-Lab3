@@ -9,26 +9,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.aptlab3.ImageQuestionElement
 import com.example.aptlab3.QuestionElement
+import com.example.aptlab3.model.ImageQuestion
+import com.example.aptlab3.model.Question
 import com.example.aptlab3.ui.theme.APTLab3Theme
-import org.json.JSONObject
 
-data class QuizScreen(val questionJson: JSONObject): Screen {
+data class QuizScreen(val questionsList: List<Question>): Screen {
     @Composable
     override fun Content() {
 
         var currentQuestion by remember { mutableStateOf(0) }
-        val questions = questionJson.getJSONArray("questions")
-        var questionObject by remember { mutableStateOf(questions.getJSONObject(currentQuestion)) }
+        var questionObject by remember { mutableStateOf(questionsList[0]) }
 
         APTLab3Theme {
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 Column {
-                    QuestionElement(questionObject)
+                    ImageQuestionElement(questionObject as ImageQuestion)
                     Button(
                         onClick = {
                             currentQuestion = if (currentQuestion == 0) 1 else 0
-                            questionObject = questions.getJSONObject(currentQuestion)
+                            questionObject = questionsList[currentQuestion]
                         }
                     ) {
                         Text("To next")

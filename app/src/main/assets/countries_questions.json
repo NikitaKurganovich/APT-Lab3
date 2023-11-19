@@ -14,7 +14,7 @@
     },
     {
       "question": "Which country this flag is?",
-      "question_type": "with_image",
+      "question_type": "image",
       "image": "egypt",
       "correct_answer": "Egypt",
       "available_answers": [
