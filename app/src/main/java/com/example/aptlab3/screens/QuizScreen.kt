@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import com.example.aptlab3.ImageQuestionElement
-import com.example.aptlab3.QuestionElement
 import com.example.aptlab3.model.ImageQuestion
 import com.example.aptlab3.model.Question
 import com.example.aptlab3.ui.theme.APTLab3Theme
