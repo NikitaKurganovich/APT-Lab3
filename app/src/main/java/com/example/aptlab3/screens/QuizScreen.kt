@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.CurrentScreen
@@ -23,27 +24,23 @@ data class QuizScreen(val questionsList: List<Question>): Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val quizViewModel = QuizViewModel()
-
-        val listSize = questionsList.size - 1
-
-
+        val listSize = QUESTION_COUNT - 1
         APTLab3Theme {
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 Column {
-                    val currentQuestion by remember { mutableIntStateOf(quizViewModel.currentQuestion.value!!.plus(1)) }
-
-                    Text("Question $currentQuestion out of $QUESTION_COUNT")
-                    Text("Your score: ${quizViewModel.score.value}")
+                    quizViewModel.currentQuestion.observeAsState().value
                     Navigator(QuestionScreen(questionsList[quizViewModel.currentQuestion.value!!])){
+                        Text("Question ${quizViewModel.currentQuestion.value!!.plus(1)} out of $QUESTION_COUNT")
+                        Text("Your score: ${quizViewModel.score.value}")
                         CurrentScreen()
                         Button(
                             onClick = {
-                                if(quizViewModel.currentQuestion.value != listSize){
-                                    quizViewModel.toNextQuestion()
-                                } else{
+                                if(quizViewModel.currentQuestion.value == listSize){
                                     navigator.pop()
+                                } else{
+                                    quizViewModel.toNextQuestion()
+                                    it.replace(QuestionScreen(questionsList[quizViewModel.currentQuestion.value!!]))
                                 }
-                                it.replace(QuestionScreen(questionsList[quizViewModel.currentQuestion.value!!]))
                             }
                         ) {
                             Text("To next")

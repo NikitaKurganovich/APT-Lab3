@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.aptlab3.ui.theme.APTLab3Theme
 import com.example.aptlab3.ui.theme.montserratFont
 import org.json.JSONObject
 
@@ -63,7 +64,7 @@ open class Question(private val jsonObject: JSONObject) {
                         },
                         modifier = Modifier
                             .padding(all = 3.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = color,disabledContainerColor = color)
+                        colors = ButtonDefaults.buttonColors(containerColor = color, disabledContainerColor = color)
                     ){
                         Text(
                             it, style = TextStyle(
