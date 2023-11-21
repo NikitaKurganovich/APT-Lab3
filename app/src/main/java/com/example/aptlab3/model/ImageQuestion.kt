@@ -19,7 +19,6 @@ data class ImageQuestion(val jsonObject: JSONObject) : Question(jsonObject) {
 
     @Composable
     override fun QuestionElement() {
-
         val context = LocalContext.current
         val imageResId = imageResMap[imageResIdString] ?: R.drawable.egypt
         val shape = RoundedCornerShape(10.dp)

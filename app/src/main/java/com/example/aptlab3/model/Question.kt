@@ -15,12 +15,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.aptlab3.ui.theme.montserratFont
 import org.json.JSONObject
 
 open class Question(private val jsonObject: JSONObject) {
-    private val correctAnswer: String = jsonObject.getString("correct_answer")
+    var isAnswered = false
 
     protected val question: String = jsonObject.getString("question")
+    private val correctAnswer: String = jsonObject.getString("correct_answer")
+
     private val answersVariants: List<String>
         get() {
             return answers.shuffled()
@@ -28,25 +31,34 @@ open class Question(private val jsonObject: JSONObject) {
 
     @Composable
     open fun QuestionElement(){
-        Text(text = question, style = MaterialTheme.typography.bodyLarge)
-        AnswerVariants()
+        Column {
+            Text(
+                text = question,
+                style = MaterialTheme.typography.headlineLarge,
+                fontFamily = montserratFont
+            )
+            AnswerVariants()
+        }
     }
     @Composable
     fun AnswerVariants() {
+        val isClickable by remember(this) { mutableStateOf(true) }
         LazyVerticalGrid(
             columns = GridCells.Fixed(2)
         ) {
             items(answersVariants) {
                 var color by remember(it) { mutableStateOf(Color.Blue) }
                 Button(
+                    enabled = isClickable,
                     onClick = {
+                        isAnswered = true
                         color = if (correctAnswer == it){
                             Color.Green
                         } else{
                             Color.Red
                         }
                     },
-                    Modifier
+                    modifier =  Modifier
                         .padding(all = 3.dp),
                     colors = ButtonDefaults.buttonColors(color)
                 ){

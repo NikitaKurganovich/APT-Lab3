@@ -13,6 +13,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.aptlab3.repository.CountriesQuestionsRepository
+import com.example.aptlab3.ui.theme.montserratFont
 
 data class HomeScreen(val baseContext: Context) : Screen {
 
@@ -28,13 +29,16 @@ data class HomeScreen(val baseContext: Context) : Screen {
         ) {
             Button(
                 onClick = {
-                    navigator.push(QuizScreen(CountriesQuestionsRepository.dataImport(baseContext)))
+                    navigator.push(QuizScreen(CountriesQuestionsRepository.importData(baseContext)))
                 },
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp)
             ){
-                Text("Countries Quiz")
+                Text(
+                    "Countries Quiz",
+                    fontFamily = montserratFont
+                )
             }
             Button(
                 onClick = {
@@ -45,7 +49,8 @@ data class HomeScreen(val baseContext: Context) : Screen {
             ){
                 Text(
                     "DRG Quiz",
-                    style = TextStyle()
+                    style = TextStyle(),
+                    fontFamily = montserratFont
                 )
             }
         }
