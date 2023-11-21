@@ -15,13 +15,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.aptlab3.ui.theme.APTLab3Theme
+import com.example.aptlab3.ui.theme.montserratFont
 import org.json.JSONObject
 
 open class Question(private val jsonObject: JSONObject) {
-    private val correctAnswer: String = jsonObject.getString("correct_answer")
+    var isAnswered = false
 
     protected val question: String = jsonObject.getString("question")
+    private val correctAnswer: String = jsonObject.getString("correct_answer")
+
     private val answersVariants: List<String>
         get() {
             return answers.shuffled()
@@ -29,8 +31,14 @@ open class Question(private val jsonObject: JSONObject) {
 
     @Composable
     open fun QuestionElement(){
-        Text(text = question, style = MaterialTheme.typography.bodyLarge)
-        AnswerVariants()
+        Column {
+            Text(
+                text = question,
+                style = MaterialTheme.typography.headlineLarge,
+                fontFamily = montserratFont
+            )
+            AnswerVariants()
+        }
     }
     @Composable
     fun AnswerVariants() {
@@ -45,6 +53,7 @@ open class Question(private val jsonObject: JSONObject) {
                     Button(
                         enabled = isClickable,
                         onClick = {
+                            isAnswered = true
                             isClickable = false
                             color = if (correctAnswer == it){
                                 Color.Green
@@ -65,7 +74,6 @@ open class Question(private val jsonObject: JSONObject) {
                 }
             }
         }
-
     }
     private val answers = List(jsonObject.getJSONArray("available_answers").length()) { i ->
         jsonObject.getJSONArray("available_answers")[i].toString()
