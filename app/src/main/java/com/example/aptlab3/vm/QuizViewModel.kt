@@ -3,8 +3,6 @@ package com.example.aptlab3.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.aptlab3.model.Question
-
 
 class QuizViewModel: ViewModel() {
     private val _score = MutableLiveData(0)
