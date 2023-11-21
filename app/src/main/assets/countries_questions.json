@@ -1,5 +1,6 @@
 {
-  "questions" : [
+  "type": "Country questions",
+  "questions": [
     {
       "question": "Which country this flag is?",
       "question_type": "image",
@@ -25,51 +26,63 @@
       ]
     },
     {
-      "question": "",
-      "question_type": "",
+      "question": "Which country is the largest in terms of land area?",
+      "question_type": "text",
       "image": null,
-      "correct_answer": "",
+      "correct_answer": "Russia",
       "available_answers": [
-        "",
-        "",
-        "",
-        ""
+        "Russia",
+        "Canada",
+        "China",
+        "United States"
       ]
     },
     {
-      "question": "",
-      "question_type": "",
+      "question": "What is the capital of India?",
+      "question_type": "text",
       "image": null,
-      "correct_answer": "",
+      "correct_answer": "New Delhi",
       "available_answers": [
-        "",
-        "",
-        "",
-        ""
+        "New Delhi",
+        "Kolkata",
+        "Mumbai",
+        "Chennai"
       ]
-    }
-    ,{
-      "question": "",
-      "question_type": "",
+    },
+    {
+      "question": "Which country is known as the “Land of the Rising Sun”?",
+      "question_type": "text",
       "image": null,
-      "correct_answer": "",
+      "correct_answer": "Japan",
       "available_answers": [
-        "",
-        "",
-        "",
-        ""
+        "Japan",
+        "China",
+        "South Korea",
+        "North Korea"
       ]
-    }
-    ,{
-      "question": "",
-      "question_type": "",
+    },
+    {
+      "question": "Which country is the smallest in terms of land area?",
+      "question_type": "text",
       "image": null,
-      "correct_answer": "",
+      "correct_answer": "Vatican City",
       "available_answers": [
-        "",
-        "",
-        "",
-        ""
+        "Monaco",
+        "San Marino",
+        "Nauru",
+        "Vatican City"
+      ]
+    },
+    {
+      "question": "Which country is known as the “Land of a Thousand Lakes”?",
+      "question_type": "text",
+      "image": null,
+      "correct_answer": "Finland",
+      "available_answers": [
+        "Finland",
+        "Sweden",
+        "Norway",
+        "Denmark"
       ]
     }
   ]
