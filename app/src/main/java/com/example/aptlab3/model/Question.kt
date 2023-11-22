@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -20,7 +21,10 @@ import com.example.aptlab3.ui.theme.montserratFont
 import org.json.JSONObject
 
 open class Question(private val jsonObject: JSONObject) {
-    var isAnswered = false
+
+    var isAnswered = mutableStateOf(false)
+    var isAnsweredCorrectly: Boolean = false
+
 
     protected val question: String = jsonObject.getString("question")
     private val correctAnswer: String = jsonObject.getString("correct_answer")
@@ -32,17 +36,23 @@ open class Question(private val jsonObject: JSONObject) {
 
     @Composable
     open fun QuestionElement(){
-        Column {
+        Column(
+            modifier = Modifier
+                .height(500.dp)
+        ){
             Text(
                 text = question,
                 style = MaterialTheme.typography.headlineLarge,
-                fontFamily = montserratFont
+                fontFamily = montserratFont,
+                modifier = Modifier
+                    .weight(0.7f)
+                    .align(Alignment.CenterHorizontally)
             )
-            AnswerVariants()
+            AnswerVariants(modifier = Modifier.weight(0.3f))
         }
     }
     @Composable
-    fun AnswerVariants() {
+    fun AnswerVariants(modifier: Modifier = Modifier) {
         var isClickable by remember(this){ mutableStateOf(true)}
         APTLab3Theme{
             val buttonColor = colorScheme.primary
@@ -54,9 +64,10 @@ open class Question(private val jsonObject: JSONObject) {
                     Button(
                         enabled = isClickable,
                         onClick = {
-                            isAnswered = true
+                            isAnswered.value = true
                             isClickable = false
-                            color = if (correctAnswer == it){
+                            isAnsweredCorrectly = correctAnswer == it
+                            color = if (isAnsweredCorrectly){
                                 Color.Green
                             } else {
                                 Color.Red

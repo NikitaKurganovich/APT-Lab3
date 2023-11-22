@@ -11,8 +11,10 @@ class QuizViewModel: ViewModel() {
     private val _currentQuestion = MutableLiveData(0)
     val currentQuestion: LiveData<Int> = _currentQuestion
 
-    fun updateScore() {
-        _score.value = _score.value!!.plus(1)
+    fun updateScore(questionViewModel: QuestionViewModel) {
+        if (questionViewModel.isAnsweredCorrectly.value!!){
+            _score.value = _score.value!!.plus(1)
+        }
     }
 
     fun toNextQuestion(){
