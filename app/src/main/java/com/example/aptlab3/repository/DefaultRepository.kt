@@ -9,7 +9,14 @@ import org.json.JSONObject
 
 open class DefaultRepository(private val jsonPath: String) {
 
-    protected fun getRandomQuestions(context: Context): List<Question> {
+    fun getQuestionsType(context: Context): String{
+        val assetManager = context.assets
+        val string = assetManager.open(jsonPath)
+            .bufferedReader()
+            .use { it.readText() }
+        return JSONObject(string).getString("type")
+    }
+    fun getRandomQuestions(context: Context): List<Question> {
         return jsonToQuestionList(context).shuffled().take(QUESTION_COUNT)
     }
     private fun jsonToQuestionList(context: Context): List<Question> {
