@@ -1,0 +1,101 @@
+{
+  "type": "drg",
+  "questions": [
+    {
+      "question": "Slap this creature?",
+      "question_type": "image",
+      "image": "cirno",
+      "correct_answer": "wtf no",
+      "available_answers": [
+        "wtf no",
+        "ofc",
+        "YESSSSS",
+        "50$ first"
+      ]
+    },
+    {
+      "question": "Which beer is this?",
+      "question_type": "image",
+      "image": "blackout",
+      "correct_answer": "Blackout stout",
+      "available_answers": [
+        "Blackout stout",
+        "Gut wrecker",
+        "Burning love",
+        "Randoweisser"
+      ]
+    },
+    {
+      "question": "Which beer is this?",
+      "question_type": "image",
+      "image": "smart",
+      "correct_answer": "Smart stout",
+      "available_answers": [
+        "Smart stout",
+        "Seasoned moonrider",
+        "Wormhole special",
+        "Mactera brew"
+      ]
+    },
+    {
+      "question": "Which beer is this?",
+      "question_type": "image",
+      "image": "underhill",
+      "correct_answer": "Underhill deluxe",
+      "available_answers": [
+        "Smart stout",
+        "Underhill deluxe",
+        "Leaf lover's special",
+        "Randoweisser"
+      ]
+    },
+    {
+      "question": "Who is this?",
+      "question_type": "image",
+      "image": "ken",
+      "correct_answer": "IDK some anime",
+      "available_answers": [
+        "IDK some anime",
+        "HUSBAND",
+        "Engineer",
+        "Bob"
+      ]
+    },
+    {
+      "question": "Which gun gunner DO NOT have?",
+      "question_type": "text",
+      "image": null,
+      "correct_answer": "M1000",
+      "available_answers": [
+        "M1000",
+        "Lead storm",
+        "Thunderhead",
+        "Hurricane"
+      ]
+    },
+    {
+      "question": "Which DRG class have DRAK-25 as main weapon?",
+      "question_type": "text",
+      "image": null,
+      "correct_answer": "Scout",
+      "available_answers": [
+        "Scout",
+        "Driller",
+        "Engineer",
+        "Gunner"
+      ]
+    },
+    {
+      "question": "Which DRG class is a psychopath?",
+      "question_type": "text",
+      "image": null,
+      "correct_answer": "Driller",
+      "available_answers": [
+        "Scout",
+        "Driller",
+        "Engineer",
+        "Gunner"
+      ]
+    }
+  ]
+}

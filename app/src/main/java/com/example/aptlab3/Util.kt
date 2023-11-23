@@ -8,6 +8,9 @@ import com.example.aptlab3.PreferencesKeys.COUNTRIES_QUESTIONS
 import com.example.aptlab3.PreferencesKeys.DRG_QUESTIONS
 import com.example.aptlab3.PreferencesKeys.USER_NAME
 import com.example.aptlab3.model.UserData
+import com.example.aptlab3.repository.CountriesQuestionsRepository
+import com.example.aptlab3.repository.DRGQuestionsRepository
+import com.example.aptlab3.repository.DefaultRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -15,10 +18,21 @@ import kotlinx.coroutines.flow.map
 val imageResMap = mapOf(
     "egypt" to R.drawable.egypt,
     "latvia" to R.drawable.latvia,
+    "cirno" to R.drawable.cirno,
+    "blackout" to R.drawable.blackout,
+    "smart" to R.drawable.smart,
+    "underhill" to R.drawable.underhill,
+    "ken" to R.drawable.ken
 )
 
-val typesMap: Map<String, Preferences.Key<Int>> = mapOf(
-    "countries" to COUNTRIES_QUESTIONS
+val preferencesTypeMap: Map<String, Preferences.Key<Int>> = mapOf(
+    "countries" to COUNTRIES_QUESTIONS,
+    "drg" to DRG_QUESTIONS
+)
+
+val repositoryTypeMap: Map<String, DefaultRepository> = mapOf(
+    "countries" to CountriesQuestionsRepository(),
+    "drg" to DRGQuestionsRepository()
 )
 
 const val QUESTION_COUNT = 5
@@ -46,14 +60,14 @@ class DataStoreManager(private val context: Context) {
     }
     suspend fun saveTestResult(questionsType: String, score: Int?) {
         context.dataStore.edit { preferences ->
-            preferences[typesMap[questionsType] as Preferences.Key<Int>] = score ?: EMPTY_RESULT
+            preferences[preferencesTypeMap[questionsType] as Preferences.Key<Int>] = score ?: EMPTY_RESULT
         }
     }
 
     fun readTestResult(questionsType: String): Flow<Int>{
         return context.dataStore.data
             .map { preferences ->
-                typesMap[questionsType]?.let { key->
+                preferencesTypeMap[questionsType]?.let { key->
                     preferences[key] ?: EMPTY_RESULT
                 } ?: EMPTY_RESULT
             }
@@ -81,7 +95,7 @@ class DataStoreManager(private val context: Context) {
 object PreferencesKeys {
     val USER_NAME = stringPreferencesKey("user")
     val COUNTRIES_QUESTIONS = intPreferencesKey("countries")
-    val DRG_QUESTIONS = intPreferencesKey("DRG")
+    val DRG_QUESTIONS = intPreferencesKey("drg")
 }
 
 val DefaultUser = UserData("Rookie", EMPTY_RESULT, EMPTY_RESULT)

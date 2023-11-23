@@ -17,22 +17,20 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.aptlab3.*
 import com.example.aptlab3.repository.CountriesQuestionsRepository
 import com.example.aptlab3.repository.DRGQuestionsRepository
+import com.example.aptlab3.repository.DefaultRepository
 import com.example.aptlab3.ui.theme.montserratFont
 
 data class HomeScreen(val baseContext: Context) : Screen {
     private val dataStoreManager = DataStoreManager(baseContext)
     private val countriesQuestionsType = CountriesQuestionsRepository().getQuestionsType(baseContext)
-    //private val deepRockQuestionsType = DRGQuestionsRepository().getQuestionsType(baseContext)
+    private val deepRockQuestionsType = DRGQuestionsRepository().getQuestionsType(baseContext)
 
 
     @Composable
     override fun Content() {
-
         val isVisible = remember {mutableStateOf(false)  }
         val navigator = LocalNavigator.currentOrThrow
-
-        var currentType by remember { mutableStateOf(countriesQuestionsType) }
-        var currentResults = dataStoreManager.readTestResult(currentType).collectAsState(EMPTY_RESULT).value
+        val userData = dataStoreManager.readUserData().collectAsState(DefaultUser).value
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -40,13 +38,15 @@ data class HomeScreen(val baseContext: Context) : Screen {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            var currentType by remember { mutableStateOf(countriesQuestionsType) }
+
             if(isVisible.value){
                 AlertOnRewriteResults(currentType, navigator, isVisible)
             }
             Button(
                 onClick = {
                     currentType = countriesQuestionsType
-                    if (currentResults == EMPTY_RESULT){
+                    if (userData.countriesQuestionsResult == EMPTY_RESULT){
                         navigator.push(QuizScreen(CountriesQuestionsRepository(), dataStoreManager))
                     } else{
                         isVisible.value = true
@@ -63,7 +63,12 @@ data class HomeScreen(val baseContext: Context) : Screen {
             }
             Button(
                 onClick = {
-
+                    currentType = deepRockQuestionsType
+                    if (userData.deepRockQuestionsResult == EMPTY_RESULT){
+                        navigator.push(QuizScreen(DRGQuestionsRepository(), dataStoreManager))
+                    } else{
+                        isVisible.value = true
+                    }
                 },
                 Modifier.fillMaxWidth()
                     .padding(horizontal = 30.dp)
@@ -103,7 +108,7 @@ data class HomeScreen(val baseContext: Context) : Screen {
             confirmButton = {
                 Button(
                     onClick = {
-                        navigator.push(QuizScreen(CountriesQuestionsRepository(), dataStoreManager))
+                        navigator.push(QuizScreen(repositoryTypeMap[type] as DefaultRepository, dataStoreManager))
                     }
                 ) {
                     Text("New attempt")

@@ -29,17 +29,19 @@ open class Question(private val jsonObject: JSONObject) {
     protected val question: String = jsonObject.getString("question")
     private val correctAnswer: String = jsonObject.getString("correct_answer")
 
-    private val answersVariants: List<String>
-        get() {
-            return answers.shuffled()
-        }
+    private val answers = List(jsonObject.getJSONArray("available_answers").length()) { i ->
+        jsonObject.getJSONArray("available_answers")[i].toString()
+    }.shuffled()
+    private val answersVariants: List<String> = answers
+
 
     @Composable
-    open fun QuestionElement(){
+    open fun QuestionElement() {
         Column(
             modifier = Modifier
-                .height(500.dp)
-        ){
+                .fillMaxSize()
+                .padding(vertical = 50.dp)
+        ) {
             Text(
                 text = question,
                 style = MaterialTheme.typography.headlineLarge,
@@ -48,46 +50,67 @@ open class Question(private val jsonObject: JSONObject) {
                     .weight(0.7f)
                     .align(Alignment.CenterHorizontally)
             )
-            AnswerVariants(modifier = Modifier.weight(0.3f))
+            AnswerVariants()
         }
     }
+
     @Composable
     fun AnswerVariants(modifier: Modifier = Modifier) {
-        var isClickable by remember(this){ mutableStateOf(true)}
-        APTLab3Theme{
-            val buttonColor = colorScheme.primary
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2)
-            ) {
-                items(answersVariants) {
-                    var color by remember(it) { mutableStateOf(buttonColor) }
-                    Button(
-                        enabled = isClickable,
-                        onClick = {
-                            isAnswered.value = true
-                            isClickable = false
-                            isAnsweredCorrectly = correctAnswer == it
-                            color = if (isAnsweredCorrectly){
-                                Color.Green
-                            } else {
-                                Color.Red
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(all = 3.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = color, disabledContainerColor = color)
-                    ){
-                        Text(
-                            it, style = TextStyle(
-                                fontSize = 25.sp
-                            )
+        val isClickable = remember(this) { mutableStateOf(true) }
+        APTLab3Theme {
+            Column {
+                val buttonColor = colorScheme.primary
+                answersVariants.forEach {
+                    Row {
+                        Spacer(Modifier.weight(0.15f))
+                        AnswerButton(
+                            buttonColor,
+                            isClickable, it,
+                            Modifier
+                                .padding(all = 3.dp)
+                                .weight(0.7f),
                         )
+                        Spacer(Modifier.weight(0.15f))
                     }
+
                 }
             }
         }
     }
-    private val answers = List(jsonObject.getJSONArray("available_answers").length()) { i ->
-        jsonObject.getJSONArray("available_answers")[i].toString()
+
+    @Composable
+    fun AnswerButton(
+        buttonColor: Color,
+        isClickable: MutableState<Boolean>,
+        text: String,
+        modifier: Modifier = Modifier
+    ) {
+        var color by remember(this) { mutableStateOf(buttonColor) }
+        Button(
+            enabled = isClickable.value,
+            onClick = {
+                isAnswered.value = true
+                isClickable.value = false
+                isAnsweredCorrectly = correctAnswer == text
+                color = if (isAnsweredCorrectly) {
+                    Color.Green
+                } else {
+                    Color.Red
+                }
+            },
+            modifier = modifier,
+            colors = ButtonDefaults
+                .buttonColors(
+                    containerColor = color,
+                    disabledContainerColor = color
+                )
+        ) {
+            Text(
+                text, style = TextStyle(
+                    fontSize = 25.sp
+                )
+            )
+        }
     }
+
 }

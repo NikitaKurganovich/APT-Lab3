@@ -18,7 +18,7 @@ import org.json.JSONObject
 data class ImageQuestion(val jsonObject: JSONObject) : Question(jsonObject) {
 
     private val imageResIdString: String = jsonObject.getString("image")
-    private val imageResId = imageResMap[imageResIdString] ?: R.drawable.egypt
+    private val imageResId = imageResMap[imageResIdString] ?: R.drawable.null_reference
     @Composable
     override fun QuestionElement() {
         val context = LocalContext.current
