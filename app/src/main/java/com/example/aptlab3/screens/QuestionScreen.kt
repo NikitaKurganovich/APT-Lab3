@@ -9,7 +9,6 @@ import com.example.aptlab3.model.Question
 data class QuestionScreen(val question: Question): Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
         question.QuestionElement()
     }
 }

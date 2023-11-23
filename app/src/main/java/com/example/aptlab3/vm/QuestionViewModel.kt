@@ -12,4 +12,8 @@ class QuestionViewModel(question: Question): ViewModel() {
 
     private val _isAnsweredCorrectly = MutableLiveData(question.isAnsweredCorrectly)
     val isAnsweredCorrectly: LiveData<Boolean> = _isAnsweredCorrectly
+
+    fun setAsUnanswered(){
+        _isAnswered.value = false
+    }
 }
