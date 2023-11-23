@@ -3,7 +3,6 @@ package com.example.aptlab3.model
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +20,6 @@ data class ImageQuestion(val jsonObject: JSONObject) : Question(jsonObject) {
     private val imageResId = imageResMap[imageResIdString] ?: R.drawable.null_reference
     @Composable
     override fun QuestionElement() {
-        val context = LocalContext.current
-
         Column(
             modifier = Modifier
                 .height(500.dp)
