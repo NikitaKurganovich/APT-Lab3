@@ -13,10 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.example.aptlab3.DataStoreManager
-import com.example.aptlab3.DefaultUser
-import com.example.aptlab3.EMPTY_RESULT
-import com.example.aptlab3.model.UserData
+import com.example.aptlab3.*
 import kotlinx.coroutines.launch
 
 
@@ -24,7 +21,8 @@ data class ResultsScreen(val dataStoreManager: DataStoreManager) : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        var isShown by remember { mutableStateOf(false) }
+        var isChangeNameDialogShown by remember { mutableStateOf(false) }
+        var isAttemptToClear by remember { mutableStateOf(false) }
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
         val userDataFlow = dataStoreManager.readUserData()
@@ -39,26 +37,29 @@ data class ResultsScreen(val dataStoreManager: DataStoreManager) : Screen {
                 text = userDataState.value.userName,
                 modifier = Modifier.clickable(
                     onClick = {
-                        isShown = true
+                        isChangeNameDialogShown = true
                     }
                 )
             )
-            if (userDataState.value.countriesQuestionsResult == EMPTY_RESULT) {
+            if (userDataState.value.isAnsweredAnyTest) {
                 Text("You haven't taken any tests yet")
             } else {
                 Column(
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Your last countries test result - ${userDataState.value.countriesQuestionsResult}")
+                    if (userDataState.value.countriesQuestionsResult != EMPTY_RESULT){
+                        Text("Your last countries test result - ${userDataState.value.countriesQuestionsResult}")
+                    }
+                    if (userDataState.value.deepRockQuestionsResult != EMPTY_RESULT){
+                        Text("Your last DRG test result - ${userDataState.value.deepRockQuestionsResult}")
+                    }
                 }
             }
             Button(
                 onClick = {
-                    userDataState.value.countriesQuestionsResult = EMPTY_RESULT
-                    scope.launch {
-                        dataStoreManager.saveUserData(userDataState.value)
-                    }
+                    isAttemptToClear = true
+
                 }
             ) {
                 Text("Clear results")
@@ -70,7 +71,39 @@ data class ResultsScreen(val dataStoreManager: DataStoreManager) : Screen {
             ) {
                 Text("To home")
             }
-            if (isShown) {
+            if (isAttemptToClear){
+                AlertDialog(
+                    onDismissRequest = { isAttemptToClear = false },
+                    title = { Text(CLEAR) },
+                    text = {
+                        Text(CLEAR_MESSAGE)
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                userDataState.value.countriesQuestionsResult = EMPTY_RESULT
+                                userDataState.value.deepRockQuestionsResult = EMPTY_RESULT
+                                scope.launch {
+                                    dataStoreManager.saveUserData(userDataState.value)
+                                    isAttemptToClear = false
+                                }
+                            }
+                        ) {
+                            Text("Clear")
+                        }
+                    },
+                    dismissButton = {
+                        Button(
+                            onClick = {
+                                isAttemptToClear = false
+                            }
+                        ) {
+                            Text("Cancel")
+                        }
+                    }
+                )
+            }
+            if (isChangeNameDialogShown) {
                 var newName by remember { mutableStateOf(userDataState.value.userName) }
                 AlertDialog(
                     onDismissRequest = { },
@@ -88,7 +121,7 @@ data class ResultsScreen(val dataStoreManager: DataStoreManager) : Screen {
                     confirmButton = {
                         Button(
                             onClick = {
-                                isShown = false
+                                isChangeNameDialogShown = false
                                 scope.launch {
                                     userDataState.value.userName = newName
                                     dataStoreManager.saveUserData(userDataState.value)

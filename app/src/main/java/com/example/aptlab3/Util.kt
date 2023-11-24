@@ -49,6 +49,9 @@ const val REWRITE_MESSAGE = "You are going to rewrite your previous results! Are
 
 const val LAST_QUESTION = "This was last question!"
 
+const val CLEAR = "Clear all of your results?"
+const val CLEAR_MESSAGE = "You are going to clear all your tests results! Are you sure?"
+
 class DataStoreManager(private val context: Context) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("user_data")
     suspend fun saveUserData(userData: UserData) {
