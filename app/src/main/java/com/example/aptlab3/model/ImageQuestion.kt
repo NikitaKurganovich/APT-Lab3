@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.aptlab3.R
 import com.example.aptlab3.imageResMap
@@ -42,8 +43,8 @@ data class ImageQuestion(val jsonObject: JSONObject) : Question(jsonObject) {
                 ) {
                     DisplayQuestionText(
                         Modifier
-                            //.weight(0.2f)
                             .align(Alignment.CenterHorizontally)
+                            .fillMaxWidth()
                     )
                     DisplayImage(
                         imageResId,
@@ -61,7 +62,9 @@ data class ImageQuestion(val jsonObject: JSONObject) : Question(jsonObject) {
         Text(
             text = question,
             style = MaterialTheme.typography.headlineLarge,
-            fontFamily = montserratFont
+            fontFamily = montserratFont,
+            textAlign = TextAlign.Center,
+            modifier = modifier
         )
     }
     @Composable

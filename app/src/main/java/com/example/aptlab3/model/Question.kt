@@ -9,10 +9,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.aptlab3.ui.theme.APTLab3Theme
+import com.example.aptlab3.ui.theme.Typography
 import com.example.aptlab3.ui.theme.montserratFont
 import org.json.JSONObject
 
@@ -63,7 +63,8 @@ open class Question(private val jsonObject: JSONObject) {
                 Text(
                     text = question,
                     style = MaterialTheme.typography.headlineLarge,
-                    fontFamily = montserratFont
+                    fontFamily = montserratFont,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -109,11 +110,7 @@ open class Question(private val jsonObject: JSONObject) {
                     disabledContainerColor = color
                 )
         ) {
-            Text(
-                text, style = TextStyle(
-                    fontSize = 25.sp
-                )
-            )
+            Text(text, style = Typography.displaySmall)
         }
     }
 

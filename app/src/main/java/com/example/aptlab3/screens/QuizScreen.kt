@@ -1,11 +1,12 @@
 package com.example.aptlab3.screens
 
-import android.content.Context
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.core.screen.Screen
@@ -17,6 +18,7 @@ import com.example.aptlab3.*
 import com.example.aptlab3.model.Question
 import com.example.aptlab3.repository.DefaultRepository
 import com.example.aptlab3.ui.theme.APTLab3Theme
+import com.example.aptlab3.ui.theme.Typography
 import com.example.aptlab3.vm.QuestionViewModel
 import com.example.aptlab3.vm.QuizViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -34,13 +36,23 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
         val repositoryName = repository.getQuestionsType(context)
         APTLab3Theme {
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                Column {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     quizViewModel.currentQuestion.observeAsState().value
                     Navigator(QuestionScreen(questionsList[quizViewModel.currentQuestion.value!!])) {
                         val questionViewModel = QuestionViewModel(questionsList[quizViewModel.currentQuestion.value!!])
                         questionViewModel.isAnswered.observeAsState().value
-                        Text("Question ${quizViewModel.currentQuestion.value!!.plus(1)} out of $QUESTION_COUNT")
-                        Text("Current score: ${quizViewModel.score.value}")
+                        Text(
+                            "Question ${quizViewModel.currentQuestion.value!!.plus(1)} out of $QUESTION_COUNT",
+                            style = Typography.bodyMedium
+                        )
+                        Text(
+                            "Current score: ${quizViewModel.score.value}",
+                            style = Typography.bodyMedium
+                        )
                         CurrentScreen()
                         if (questionViewModel.isAnswered.value!!) {
                             if (quizViewModel.currentQuestion.value != LIST_SIZE) {
@@ -71,7 +83,8 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
                         CORRECT
                     } else {
                         INCORRECT
-                    }
+                    },
+                    style = Typography.bodyMedium
                 )
             },
             text = {
@@ -80,7 +93,8 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
                         SCORE_ON_CORRECT
                     } else {
                         SCORE_ON_INCORRECT
-                    }
+                    },
+                    style = Typography.bodyMedium
                 )
             },
             confirmButton = {
@@ -90,7 +104,7 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
                         innerNavigator.replace(QuestionScreen(questionsList[quizViewModel.currentQuestion.value!!]))
                     }
                 ) {
-                    Text("To next")
+                    Text("To next", style = Typography.displaySmall)
                 }
             }
         )
@@ -112,13 +126,15 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
                         CORRECT
                     } else {
                         INCORRECT
-                    }
+                    },
+                    style = Typography.bodyMedium
                 )
             },
             text = {
                 Text(
                     LAST_QUESTION +
-                    "\nYour score is ${quizViewModel.score.value}"
+                    "\nYour score is ${quizViewModel.score.value}",
+                    style = Typography.bodySmall
                 )
             },
             confirmButton = {
@@ -130,7 +146,7 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
                         navigator.pop()
                     }
                 ) {
-                    Text("To home screen")
+                    Text("To home screen", style = Typography.displaySmall)
                 }
             }
         )
