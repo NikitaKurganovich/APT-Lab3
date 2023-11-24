@@ -1,9 +1,8 @@
 package com.example.aptlab3.model
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -37,17 +36,36 @@ open class Question(private val jsonObject: JSONObject) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 50.dp)
+                .padding(15.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = question,
-                style = MaterialTheme.typography.headlineLarge,
-                fontFamily = montserratFont,
-                modifier = Modifier
+            DisplayQuestionText(
+                Modifier
                     .weight(0.7f)
                     .align(Alignment.CenterHorizontally)
             )
-            AnswerVariants()
+            Spacer(Modifier.weight(0.05f))
+            AnswerVariants(Modifier.weight(0.25f))
+        }
+    }
+    @Composable
+    open fun DisplayQuestionText(modifier: Modifier = Modifier) {
+        Card(
+            modifier = modifier.fillMaxSize(),
+            shape = RoundedCornerShape(20.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = question,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontFamily = montserratFont
+                )
+            }
         }
     }
 
@@ -57,19 +75,8 @@ open class Question(private val jsonObject: JSONObject) {
         APTLab3Theme {
             Column {
                 val buttonColor = colorScheme.primary
-                answersVariants.forEach {
-                    Row {
-                        Spacer(Modifier.weight(0.15f))
-                        AnswerButton(
-                            buttonColor,
-                            isClickable, it,
-                            Modifier
-                                .padding(all = 3.dp)
-                                .weight(0.7f),
-                        )
-                        Spacer(Modifier.weight(0.15f))
-                    }
-
+                answersVariants.forEach { answerVariant ->
+                    DisplayAnswerButtonRow(buttonColor, isClickable, answerVariant)
                 }
             }
         }
@@ -107,6 +114,21 @@ open class Question(private val jsonObject: JSONObject) {
                     fontSize = 25.sp
                 )
             )
+        }
+    }
+
+    @Composable
+    fun DisplayAnswerButtonRow(buttonColor: Color, isClickable: MutableState<Boolean>, answerVariant: String) {
+        Row {
+            Spacer(Modifier.weight(0.1f))
+            AnswerButton(
+                buttonColor,
+                isClickable, answerVariant,
+                Modifier
+                    .padding(all = 3.dp)
+                    .weight(0.8f),
+            )
+            Spacer(Modifier.weight(0.1f))
         }
     }
 
