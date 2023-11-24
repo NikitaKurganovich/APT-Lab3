@@ -2,9 +2,7 @@ package com.example.aptlab3.screens
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +41,7 @@ data class HomeScreen(val baseContext: Context) : Screen {
                 AlertOnRewriteResults(currentType, navigator, isVisible)
             }
             Button(
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 onClick = {
                     currentType = countriesQuestionsType
                     if (userData.countriesQuestionsResult == EMPTY_RESULT) {
@@ -51,13 +50,14 @@ data class HomeScreen(val baseContext: Context) : Screen {
                         isVisible.value = true
                     }
                 },
-                Modifier
+                modifier =  Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp)
             ) {
                 Text("Countries Quiz", style = Typography.displaySmall)
             }
             Button(
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 onClick = {
                     currentType = deepRockQuestionsType
                     if (userData.deepRockQuestionsResult == EMPTY_RESULT) {
@@ -66,17 +66,18 @@ data class HomeScreen(val baseContext: Context) : Screen {
                         isVisible.value = true
                     }
                 },
-                Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 30.dp)
             ) {
                 Text("DRG Quiz", style = Typography.displaySmall)
             }
             Spacer(Modifier.height(200.dp))
             Button(
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 onClick = {
                     navigator.push(ProfileScreen(dataStoreManager))
                 },
-                Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 30.dp)
             ) {
                 Text("View profile", style = Typography.displaySmall)
@@ -98,6 +99,7 @@ data class HomeScreen(val baseContext: Context) : Screen {
             ) },
             confirmButton = {
                 Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
                         navigator.push(QuizScreen(repositoryTypeMap[type] as DefaultRepository, dataStoreManager))
                     }
@@ -107,6 +109,7 @@ data class HomeScreen(val baseContext: Context) : Screen {
             },
             dismissButton = {
                 Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
                         isVisible.value = false
                     }

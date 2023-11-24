@@ -77,7 +77,7 @@ data class ProfileScreen(val dataStoreManager: DataStoreManager) : Screen {
     @Composable
     fun UserTestResults(userDataState: State<UserData>) {
         if (userDataState.value.isAnsweredAnyTest) {
-            Text("You haven't taken any tests yet",style = Typography.bodyMedium)
+            Text("You haven't taken any tests yet", style = Typography.bodyMedium)
         } else {
             Column(
                 Modifier.fillMaxWidth(),
@@ -107,10 +107,11 @@ data class ProfileScreen(val dataStoreManager: DataStoreManager) : Screen {
         modifier: Modifier = Modifier
     ) {
         Button(
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             modifier = modifier,
             onClick = { isAttemptToClear.value = true }
         ) {
-            Text("Clear results",style = Typography.displaySmall)
+            Text("Clear results", style = Typography.displaySmall)
         }
     }
 
@@ -120,10 +121,11 @@ data class ProfileScreen(val dataStoreManager: DataStoreManager) : Screen {
         modifier: Modifier = Modifier
     ) {
         Button(
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             modifier = modifier,
             onClick = { navigator.pop() }
         ) {
-            Text("To home",style = Typography.displaySmall)
+            Text("To home", style = Typography.displaySmall)
         }
     }
 
@@ -176,7 +178,7 @@ data class ProfileScreen(val dataStoreManager: DataStoreManager) : Screen {
             var newName by remember { mutableStateOf(userDataState.value.userName) }
             AlertDialog(
                 onDismissRequest = { },
-                title = { Text("Change user name",style = Typography.displaySmall) },
+                title = { Text("Change user name", style = Typography.displaySmall) },
                 text = {
                     OutlinedTextField(
                         value = newName,

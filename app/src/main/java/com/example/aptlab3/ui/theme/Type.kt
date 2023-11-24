@@ -33,8 +33,8 @@ val Typography = Typography(
     ),
     displaySmall = TextStyle(
         fontFamily = montserratFont,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

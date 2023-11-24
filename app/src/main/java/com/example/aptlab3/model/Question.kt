@@ -49,6 +49,7 @@ open class Question(private val jsonObject: JSONObject) {
             AnswerVariants(Modifier.weight(0.25f))
         }
     }
+
     @Composable
     open fun DisplayQuestionText(modifier: Modifier = Modifier) {
         Card(
@@ -106,8 +107,9 @@ open class Question(private val jsonObject: JSONObject) {
             modifier = modifier,
             colors = ButtonDefaults
                 .buttonColors(
-                    containerColor = color,
-                    disabledContainerColor = color
+                    disabledContainerColor = color,
+                    disabledContentColor = Color.Black,
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
         ) {
             Text(text, style = Typography.displaySmall)

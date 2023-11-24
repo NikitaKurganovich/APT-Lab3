@@ -99,6 +99,7 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
             },
             confirmButton = {
                 Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
                         quizViewModel.toNextQuestion()
                         innerNavigator.replace(QuestionScreen(questionsList[quizViewModel.currentQuestion.value!!]))
@@ -139,6 +140,7 @@ data class QuizScreen(val repository: DefaultRepository, val dataStoreManager: D
             },
             confirmButton = {
                 Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
                         scope.launch {
                             dataStoreManager.saveTestResult(repositoryName, quizViewModel.score.value!!)
