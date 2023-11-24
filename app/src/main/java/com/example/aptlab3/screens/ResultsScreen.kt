@@ -9,132 +9,162 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.aptlab3.*
+import com.example.aptlab3.model.UserData
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
 data class ResultsScreen(val dataStoreManager: DataStoreManager) : Screen {
-    @OptIn(ExperimentalMaterial3Api::class)
+    private val userDataFlow = dataStoreManager.readUserData()
+
     @Composable
     override fun Content() {
-        var isChangeNameDialogShown by remember { mutableStateOf(false) }
-        var isAttemptToClear by remember { mutableStateOf(false) }
+        val isChangeNameDialogShown = remember { mutableStateOf(false) }
+        val isAttemptToClear = remember { mutableStateOf(false) }
         val navigator = LocalNavigator.currentOrThrow
-        val context = LocalContext.current
-        val userDataFlow = dataStoreManager.readUserData()
         val userDataState = userDataFlow.collectAsState(initial = DefaultUser)
         val scope = rememberCoroutineScope()
-        Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            Text(
-                text = userDataState.value.userName,
-                modifier = Modifier.clickable(
-                    onClick = {
-                        isChangeNameDialogShown = true
-                    }
-                )
-            )
-            if (userDataState.value.isAnsweredAnyTest) {
-                Text("You haven't taken any tests yet")
-            } else {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    if (userDataState.value.countriesQuestionsResult != EMPTY_RESULT){
-                        Text("Your last countries test result - ${userDataState.value.countriesQuestionsResult}")
-                    }
-                    if (userDataState.value.deepRockQuestionsResult != EMPTY_RESULT){
-                        Text("Your last DRG test result - ${userDataState.value.deepRockQuestionsResult}")
-                    }
-                }
-            }
-            Button(
-                onClick = {
-                    isAttemptToClear = true
 
-                }
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            UserNameText(userDataState, isChangeNameDialogShown)
+            UserTestResults(userDataState)
+
+            ClearResultsButton(isAttemptToClear)
+            HomeButton(navigator)
+
+            ClearResultsDialog(isAttemptToClear, userDataState, scope)
+            ChangeNameDialog(isChangeNameDialogShown, userDataState, scope)
+        }
+    }
+
+    @Composable
+    fun UserNameText(userDataState: State<UserData>, isChangeNameDialogShown: MutableState<Boolean>) {
+        Text(
+            text = userDataState.value.userName,
+            modifier = Modifier.clickable { isChangeNameDialogShown.value = true }
+        )
+    }
+
+    @Composable
+    fun UserTestResults(userDataState: State<UserData>) {
+        if (userDataState.value.isAnsweredAnyTest) {
+            Text("You haven't taken any tests yet")
+        } else {
+            Column(
+                Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Clear results")
-            }
-            Button(
-                onClick = {
-                    navigator.pop()
+                if (userDataState.value.countriesQuestionsResult != EMPTY_RESULT) {
+                    Text("Your last countries test result - ${userDataState.value.countriesQuestionsResult}")
                 }
-            ) {
-                Text("To home")
+                if (userDataState.value.deepRockQuestionsResult != EMPTY_RESULT) {
+                    Text("Your last DRG test result - ${userDataState.value.deepRockQuestionsResult}")
+                }
             }
-            if (isAttemptToClear){
-                AlertDialog(
-                    onDismissRequest = { isAttemptToClear = false },
-                    title = { Text(CLEAR) },
-                    text = {
-                        Text(CLEAR_MESSAGE)
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                userDataState.value.countriesQuestionsResult = EMPTY_RESULT
-                                userDataState.value.deepRockQuestionsResult = EMPTY_RESULT
-                                scope.launch {
-                                    dataStoreManager.saveUserData(userDataState.value)
-                                    isAttemptToClear = false
-                                }
+        }
+    }
+
+    @Composable
+    fun ClearResultsButton(
+        isAttemptToClear: MutableState<Boolean>
+    ) {
+        Button(
+            onClick = { isAttemptToClear.value = true }
+        ) {
+            Text("Clear results")
+        }
+    }
+
+    @Composable
+    fun HomeButton(navigator: Navigator) {
+        Button(
+            onClick = { navigator.pop() }
+        ) {
+            Text("To home")
+        }
+    }
+
+    @Composable
+    fun ClearResultsDialog(
+        isAttemptToClear: MutableState<Boolean>,
+        userDataState: State<UserData>,
+        scope: CoroutineScope
+    ) {
+        if (isAttemptToClear.value) {
+            AlertDialog(
+                onDismissRequest = { isAttemptToClear.value = false },
+                title = { Text(CLEAR) },
+                text = { Text(CLEAR_MESSAGE) },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                val updatedUserData = userDataState.value.copy(
+                                    countriesQuestionsResult = EMPTY_RESULT,
+                                    deepRockQuestionsResult = EMPTY_RESULT
+                                )
+                                dataStoreManager.saveUserData(updatedUserData)
+                                isAttemptToClear.value = false
                             }
-                        ) {
-                            Text("Clear")
                         }
-                    },
-                    dismissButton = {
-                        Button(
-                            onClick = {
-                                isAttemptToClear = false
-                            }
-                        ) {
-                            Text("Cancel")
-                        }
+                    ) {
+                        Text("Clear")
                     }
-                )
-            }
-            if (isChangeNameDialogShown) {
-                var newName by remember { mutableStateOf(userDataState.value.userName) }
-                AlertDialog(
-                    onDismissRequest = { },
-                    title = { Text("Change user name") },
-                    text = {
-                        OutlinedTextField(
-                            value = newName,
-                            onValueChange = {
-                                newName = it
-                            },
-                            label = { Text("New name") }
-                        )
-                        Text(userDataState.value.userName)
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                isChangeNameDialogShown = false
-                                scope.launch {
-                                    userDataState.value.userName = newName
-                                    dataStoreManager.saveUserData(userDataState.value)
-                                }
-                            }
-                        ) {
-                            Text("Save")
-                        }
-                    },
-                    dismissButton = {
+                },
+                dismissButton = {
+                    Button(
+                        onClick = { isAttemptToClear.value = false }
+                    ) {
+                        Text("Cancel")
                     }
-                )
-            }
+                }
+            )
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun ChangeNameDialog(
+        isChangeNameDialogShown: MutableState<Boolean>,
+        userDataState: State<UserData>,
+        scope: CoroutineScope
+    ) {
+        if (isChangeNameDialogShown.value) {
+            var newName by remember { mutableStateOf(userDataState.value.userName) }
+            AlertDialog(
+                onDismissRequest = { },
+                title = { Text("Change user name") },
+                text = {
+                    OutlinedTextField(
+                        value = newName,
+                        onValueChange = { newName = it },
+                        label = { Text("New name") }
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            isChangeNameDialogShown.value = false
+                            scope.launch {
+                                val updatedUserData = userDataState.value.copy(userName = newName)
+                                dataStoreManager.saveUserData(updatedUserData)
+                            }
+                        }
+                    ) {
+                        Text("Save")
+                    }
+                },
+                dismissButton = { /*...*/ }
+            )
         }
     }
 }
