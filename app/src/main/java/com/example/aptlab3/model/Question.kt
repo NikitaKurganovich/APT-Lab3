@@ -109,7 +109,7 @@ open class Question(private val jsonObject: JSONObject) {
                 .buttonColors(
                     disabledContainerColor = color,
                     disabledContentColor = Color.Black,
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = colorScheme.primary
                 )
         ) {
             Text(text, style = Typography.displaySmall)
